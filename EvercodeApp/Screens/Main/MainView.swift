@@ -6,6 +6,9 @@ final class MainView: UIView {
        
         let view = UITableView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        view.delegate = self
+        view.dataSource = self
         return view
     }()
     
@@ -16,6 +19,7 @@ final class MainView: UIView {
         super.init(frame: .zero)
 
         self.setupViews()
+        
     }
 
     required init?(coder: NSCoder) {
@@ -57,4 +61,22 @@ private extension MainView {
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
+}
+
+
+extension MainView : UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return items.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = (tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath))
+        
+        cell.textLabel?.text = items[indexPath.row]
+        
+        return cell
+    }
+    
+    
 }
